@@ -1,9 +1,11 @@
 // Copyright (c) 2017, A. Stoewer <adrian.stoewer@rz.ifi.lmu.de>
 // All rights reserved.
 
-package qparam_test
+package qparam
 
 import (
+    "errors"
+    "fmt"
 	"net/url"
 	"testing"
 	"time"
@@ -246,5 +248,37 @@ func TestReader_Read(t *testing.T) {
 
 		assert.NoError(t, err)
 		assert.EqualValues(t, expected, target)
+	})
+
+	t.Run("Format", func(t *testing.T) {
+        multi := multiError{ "key": errors.New("error") }
+
+        s := fmt.Sprintf("%s", multi)
+
+        assert.Equal(t, "multiError[key:error]", s, "%s formatting is incorrect")
+	})
+
+	t.Run("Format", func(t *testing.T) {
+        multi := multiError{ "key": errors.New("error") }
+
+        s := fmt.Sprintf("%q", multi)
+
+        assert.Equal(t, "multiError[\"key\":\"error\"]", s, "%q formatting is incorrect")
+	})
+
+	t.Run("Format", func(t *testing.T) {
+        multi := multiError{ "key": errors.New("error") }
+
+        s := fmt.Sprintf("%v", multi)
+
+        assert.Equal(t, "multiError[key:error]", s, "%v formatting is incorrect")
+	})
+
+	t.Run("Format", func(t *testing.T) {
+        multi := multiError{ "key": errors.New("error") }
+
+        s := fmt.Sprintf("%+v", multi)
+
+        assert.Equal(t, "multiError[key:error]", s, "%+v formatting is incorrect")
 	})
 }

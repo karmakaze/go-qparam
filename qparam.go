@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"net/url"
 	"reflect"
+	"strconv"
 	"strings"
 
 	"github.com/pkg/errors"
@@ -195,6 +196,7 @@ func (r *Reader) readSlice(values []string, slice reflect.Value) error {
 // which altogether caused the actual failure.
 type MultiError interface {
 	error
+	fmt.Formatter
 	ErrorMap() map[string]error
 }
 
@@ -204,6 +206,31 @@ type multiError map[string]error
 // Error returns a string summarizing all errors
 func (err multiError) Error() string {
 	return fmt.Sprintf("%d errors occured while reading parameters", len(err))
+}
+
+// Format performs 'Printf' type formatting
+func (err multiError) Format(f fmt.State, c rune) {
+    format := "%"
+    if width, ok := f.Width(); ok {
+        format = format + strconv.Itoa(width)
+    }
+    if precision, ok := f.Precision(); ok {
+        format = format +"."+ strconv.Itoa(precision)
+    }
+    for _, flag := range []int {'+', '#'} {
+        if f.Flag(flag) {
+            format = format + fmt.Sprintf("%c", flag)
+        }
+    }
+
+    format = fmt.Sprintf("%s%c", format, c)
+
+    fmt.Println(format)
+
+    formatted := fmt.Sprintf(format, err.ErrorMap())
+    formatted = "multiError" + formatted[3:]
+
+    f.Write([]byte(formatted))
 }
 
 // ErrorMap returns all field names with their respective errors
