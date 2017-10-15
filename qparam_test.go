@@ -4,8 +4,8 @@
 package qparam
 
 import (
-    "errors"
-    "fmt"
+	"errors"
+	"fmt"
 	"net/url"
 	"testing"
 	"time"
@@ -249,36 +249,38 @@ func TestReader_Read(t *testing.T) {
 		assert.NoError(t, err)
 		assert.EqualValues(t, expected, target)
 	})
+}
 
-	t.Run("Format", func(t *testing.T) {
-        multi := multiError{ "key": errors.New("error") }
+func TestReader_Format(t *testing.T) {
+	t.Run("Format %s", func(t *testing.T) {
+		multi := multiError{"key": errors.New("error")}
 
-        s := fmt.Sprintf("%s", multi)
+		s := fmt.Sprintf("%s", multi)
 
-        assert.Equal(t, "multiError[key:error]", s, "%s formatting is incorrect")
+		assert.Equal(t, "multiError[key:error]", s, "%s formatting is incorrect")
 	})
 
-	t.Run("Format", func(t *testing.T) {
-        multi := multiError{ "key": errors.New("error") }
+	t.Run("Format %q", func(t *testing.T) {
+		multi := multiError{"key": errors.New("error")}
 
-        s := fmt.Sprintf("%q", multi)
+		s := fmt.Sprintf("%q", multi)
 
-        assert.Equal(t, "multiError[\"key\":\"error\"]", s, "%q formatting is incorrect")
+		assert.Equal(t, "multiError[\"key\":\"error\"]", s, "%q formatting is incorrect")
 	})
 
-	t.Run("Format", func(t *testing.T) {
-        multi := multiError{ "key": errors.New("error") }
+	t.Run("Format %v", func(t *testing.T) {
+		multi := multiError{"key": errors.New("error")}
 
-        s := fmt.Sprintf("%v", multi)
+		s := fmt.Sprintf("%v", multi)
 
-        assert.Equal(t, "multiError[key:error]", s, "%v formatting is incorrect")
+		assert.Equal(t, "multiError[key:error]", s, "%v formatting is incorrect")
 	})
 
-	t.Run("Format", func(t *testing.T) {
-        multi := multiError{ "key": errors.New("error") }
+	t.Run("Format %+v", func(t *testing.T) {
+		multi := multiError{"key": errors.New("error")}
 
-        s := fmt.Sprintf("%+v", multi)
+		s := fmt.Sprintf("%+v", multi)
 
-        assert.Equal(t, "multiError[key:error]", s, "%+v formatting is incorrect")
+		assert.Equal(t, "multiError[key:error]", s, "%+v formatting is incorrect")
 	})
 }

@@ -210,27 +210,27 @@ func (err multiError) Error() string {
 
 // Format performs 'Printf' type formatting
 func (err multiError) Format(f fmt.State, c rune) {
-    format := "%"
-    if width, ok := f.Width(); ok {
-        format = format + strconv.Itoa(width)
-    }
-    if precision, ok := f.Precision(); ok {
-        format = format +"."+ strconv.Itoa(precision)
-    }
-    for _, flag := range []int {'+', '#'} {
-        if f.Flag(flag) {
-            format = format + fmt.Sprintf("%c", flag)
-        }
-    }
+	format := "%"
+	if width, ok := f.Width(); ok {
+		format = format + strconv.Itoa(width)
+	}
+	if precision, ok := f.Precision(); ok {
+		format = format + "." + strconv.Itoa(precision)
+	}
+	for _, flag := range []int{'+', '#'} {
+		if f.Flag(flag) {
+			format = format + fmt.Sprintf("%c", flag)
+		}
+	}
 
-    format = fmt.Sprintf("%s%c", format, c)
+	format = fmt.Sprintf("%s%c", format, c)
 
-    fmt.Println(format)
+	fmt.Println(format)
 
-    formatted := fmt.Sprintf(format, err.ErrorMap())
-    formatted = "multiError" + formatted[3:]
+	formatted := fmt.Sprintf(format, err.ErrorMap())
+	formatted = "multiError" + formatted[3:]
 
-    f.Write([]byte(formatted))
+	f.Write([]byte(formatted))
 }
 
 // ErrorMap returns all field names with their respective errors
