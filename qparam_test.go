@@ -1,7 +1,7 @@
 // Copyright (c) 2017, A. Stoewer <adrian.stoewer@rz.ifi.lmu.de>
 // All rights reserved.
 
-package qparam
+package qparam_test
 
 import (
 	"errors"
